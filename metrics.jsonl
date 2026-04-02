@@ -1,1 +1,6 @@
 {"event":"phase","ts":"2026-04-01T15:00:00Z","agent":"single","name":"development","action":"start"}
+{"event":"phase","ts":"2026-04-02T04:26:00Z","agent":"single","name":"development","action":"end"}
+{"event":"phase","ts":"2026-04-02T04:26:00Z","agent":"single","name":"review","action":"start"}
+{"event":"bug_found","ts":"2026-04-02T04:30:00Z","source":"self","description":"密码明文存储在数据库中","severity":"P1","file":"src/lib/db.ts","fixed":true}
+{"event":"bug_found","ts":"2026-04-02T04:30:00Z","source":"self","description":"Session token用base64编码无签名可伪造","severity":"P1","file":"src/lib/auth.ts","fixed":true}
+{"event":"bug_found","ts":"2026-04-02T04:30:00Z","source":"self","description":"logout路由硬编码URL导致basePath下无法正确跳转","severity":"P2","file":"src/app/api/auth/logout/route.ts","fixed":true}
