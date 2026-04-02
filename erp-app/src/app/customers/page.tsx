@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import DataTable from "@/components/DataTable";
+import { api } from "@/lib/api";
 
 interface Customer {
   id: number;
@@ -25,7 +26,7 @@ export default function CustomersPage() {
   const fetchCustomers = useCallback(async () => {
     const params = new URLSearchParams();
     if (search) params.set("search", search);
-    const res = await fetch(`/api/customers?${params}`);
+    const res = await api(`/api/customers?${params}`);
     const data = await res.json();
     setCustomers(data);
     setLoading(false);
@@ -62,7 +63,7 @@ export default function CustomersPage() {
     const url = editing ? `/api/customers/${editing.id}` : "/api/customers";
     const method = editing ? "PUT" : "POST";
 
-    const res = await fetch(url, {
+    const res = await api(url, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -80,7 +81,7 @@ export default function CustomersPage() {
 
   async function handleDelete(customer: Customer) {
     if (!confirm(`确定要删除客户"${customer.name}"吗？`)) return;
-    const res = await fetch(`/api/customers/${customer.id}`, { method: "DELETE" });
+    const res = await api(`/api/customers/${customer.id}`, { method: "DELETE" });
     if (!res.ok) {
       const data = await res.json();
       alert(data.error || "删除失败");

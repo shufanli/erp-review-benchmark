@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { api } from "@/lib/api";
 
 interface Order {
   id: number;
@@ -73,7 +74,7 @@ export default function OrdersPage() {
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     if (statusFilter) params.set("status", statusFilter);
-    const res = await fetch(`/api/orders?${params}`);
+    const res = await api(`/api/orders?${params}`);
     const data = await res.json();
     setOrders(data);
     setLoading(false);
@@ -84,7 +85,7 @@ export default function OrdersPage() {
   }, [fetchOrders]);
 
   async function openCreate() {
-    const [prodRes, custRes] = await Promise.all([fetch("/api/products"), fetch("/api/customers")]);
+    const [prodRes, custRes] = await Promise.all([api("/api/products"), api("/api/customers")]);
     setProducts(await prodRes.json());
     setCustomers(await custRes.json());
     setFormItems([{ product_id: 0, quantity: 1, price: 0 }]);
@@ -127,7 +128,7 @@ export default function OrdersPage() {
       return;
     }
 
-    const res = await fetch("/api/orders", {
+    const res = await api("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -148,7 +149,7 @@ export default function OrdersPage() {
   }
 
   async function updateStatus(orderId: number, newStatus: string) {
-    const res = await fetch(`/api/orders/${orderId}`, {
+    const res = await api(`/api/orders/${orderId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),

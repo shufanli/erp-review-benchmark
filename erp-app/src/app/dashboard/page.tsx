@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
 
 interface DashboardData {
   stats: {
@@ -42,7 +43,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/dashboard")
+    api("/api/dashboard")
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));

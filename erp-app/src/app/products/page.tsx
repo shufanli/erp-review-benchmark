@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import DataTable from "@/components/DataTable";
+import { api } from "@/lib/api";
 
 interface Product {
   id: number;
@@ -25,7 +26,7 @@ export default function ProductsPage() {
   const fetchProducts = useCallback(async () => {
     const params = new URLSearchParams();
     if (search) params.set("search", search);
-    const res = await fetch(`/api/products?${params}`);
+    const res = await api(`/api/products?${params}`);
     const data = await res.json();
     setProducts(data);
     setLoading(false);
@@ -62,7 +63,7 @@ export default function ProductsPage() {
     const url = editing ? `/api/products/${editing.id}` : "/api/products";
     const method = editing ? "PUT" : "POST";
 
-    const res = await fetch(url, {
+    const res = await api(url, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -80,7 +81,7 @@ export default function ProductsPage() {
 
   async function handleDelete(product: Product) {
     if (!confirm(`确定要删除产品"${product.name}"吗？`)) return;
-    const res = await fetch(`/api/products/${product.id}`, { method: "DELETE" });
+    const res = await api(`/api/products/${product.id}`, { method: "DELETE" });
     if (!res.ok) {
       const data = await res.json();
       alert(data.error || "删除失败");
